@@ -2,42 +2,34 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserTypeormRepository } from './repositories/user-typeorm-repository';
+import { SearchUserDto } from './dto/search-user.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private usersRepository: UserTypeormRepository,
   ) {}
 
   create(createProfileDto: CreateUserDto) {
-    return this.usersRepository.save(
-      this.usersRepository.create(createProfileDto),
-    );
+    return this.usersRepository.insertOne(createProfileDto);
   }
 
   findAll() {
-    return `This action returns all user`;
+    return this.usersRepository.findMany({});
   }
 
-  findOne(fields: Partial<User>) {
-    return this.usersRepository.findOne({
-      where: fields,
-    });
+  findOne(filter: SearchUserDto) {
+    return this.usersRepository.findOne(filter);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    return new Promise(() => new User());
+  update(updateUserDto: UpdateUserDto): Promise<User> {
+    return this.usersRepository.update(updateUserDto);
   }
 
   softDelete(id: number): Promise<User> {
     return new Promise(() => new User());
-  }
-  save(createProfileDto: User) {
-    return this.usersRepository.save(
-      this.usersRepository.create(createProfileDto),
-    );
   }
 }

@@ -10,6 +10,8 @@ import * as crypto from 'crypto';
 import { UserService } from 'src/http/user/user.service';
 import { MailService } from 'src/http/mail/mail.service';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { CreateUserDto } from 'src/http/user/dto/create-user.dto';
+import { UpdateUserDto } from 'src/http/user/dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -60,7 +62,7 @@ export class AuthService {
     );
   }
 
-  async register(registerDto: RegisterUserDto): Promise<void> {
+  async register(registerDto: CreateUserDto): Promise<void> {
     const hash = crypto
       .createHash('sha256')
       .update(randomStringGenerator())
@@ -96,7 +98,7 @@ export class AuthService {
 
     user.hash = null;
     user.status = UserStatus.ACTIVE;
-    const result = await this.userService.update(user.id, user);
+    const result = await this.userService.update(user);
     return result;
   }
 
@@ -121,10 +123,7 @@ export class AuthService {
       .createHash('sha256')
       .update(randomStringGenerator())
       .digest('hex');
-    await this.userService.create({
-      hash,
-      user,
-    });
+    await this.userService.create({ ...user, hash });
 
     await this.mailService.forgotPassword({
       to: email,
@@ -152,7 +151,7 @@ export class AuthService {
     }
 
     user.password = password;
-    const result = this.userService.update(user.id, user);
+    const result = this.userService.update(user);
     return await result;
   }
 
@@ -166,9 +165,9 @@ export class AuthService {
     return foundedUser;
   }
 
-  async update(user: User, userDto: AuthUpdateDto): Promise<User> {
+  async update(userDto: UpdateUserDto): Promise<User> {
     const foundedUser = await this.userService.findOne({
-      id: user.id,
+      id: userDto.id,
     });
 
     const isValidOldPassword = await bcrypt.compare(
@@ -188,7 +187,7 @@ export class AuthService {
       );
     }
 
-    return this.userService.update(foundedUser.id, userDto);
+    return this.userService.update(userDto);
   }
 
   async softDelete(user: User): Promise<User> {

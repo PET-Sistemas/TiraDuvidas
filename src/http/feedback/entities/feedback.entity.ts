@@ -1,21 +1,14 @@
 import {
-  AfterLoad,
-  BeforeInsert,
-  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { RoleEnum } from 'src/http/role/role.enum';
 import { FeedbackStatus } from '../enums/feedback-status.enum';
-import * as bcrypt from 'bcryptjs';
-import { AuthProvidersEnum } from 'src/auth/auth-providers.enum';
 import { User } from 'src/http/user/entities/user.entity';
 import { Answer } from 'src/http/answer/entities/answer.entity';
 
@@ -36,13 +29,13 @@ export class Feedback {
   @Column({ type: 'enum', enum: FeedbackStatus, name: 'situation' })
   situation?: FeedbackStatus;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at' })
   updatedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
+  @DeleteDateColumn({ type: 'timestamptz', name: 'deleted_at' })
   deletedAt: Date;
 
   @ManyToOne(() => User)

@@ -18,6 +18,11 @@ export class UpdateUserDto {
   @IsString()
   password?: string;
 
+  @ApiPropertyOptional({ description: 'Senha antiga do usuário' })
+  @IsOptional()
+  @IsString()
+  oldPassword?: string;
+
   @ApiPropertyOptional({ description: 'Provedor de autenticação' })
   @IsOptional()
   @IsString()

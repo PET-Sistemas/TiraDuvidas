@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { SearchUserDto } from '../dto/search-user.dto';
 
 export class UserTypeormRepository {
   constructor(
@@ -13,14 +14,12 @@ export class UserTypeormRepository {
     return await this.userRepo.save(data);
   }
 
-  async findOne(id: number): Promise<User | undefined> {
-    const filter = { id };
+  async findOne(filter: SearchUserDto): Promise<User | undefined> {
     return await this.userRepo.findOne(filter);
   }
 
-  async findOneMany(id: number): Promise<User | undefined> {
-    const filter = { id };
-    return await this.userRepo.findOne(filter);
+  async findMany(filter: SearchUserDto): Promise<User[]> {
+    return await this.userRepo.find(filter);
   }
 
   async update(data: UpdateUserDto): Promise<User | undefined> {
