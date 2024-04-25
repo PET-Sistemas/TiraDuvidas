@@ -20,7 +20,6 @@ export class AuthService {
   ) {}
 
   async validateLogin(loginDto: AuthEmailLoginDto) {
-    console.log(loginDto);
     const user = await this.userService.findOne({
       email: loginDto.email,
     });

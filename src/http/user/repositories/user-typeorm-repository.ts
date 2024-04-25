@@ -11,7 +11,9 @@ export class UserTypeormRepository {
   ) {}
 
   async insertOne(data: CreateUserDto): Promise<User | undefined> {
-    return await this.userRepo.save(data);
+    const user = await this.userRepo.save(this.userRepo.create(data));
+
+    return user;
   }
 
   async findOne(filter: SearchUserDto): Promise<User | undefined> {
