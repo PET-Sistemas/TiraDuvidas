@@ -27,7 +27,7 @@ export class AnswerController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.answerService.findOne({ id });
+    return this.answerService.findOne(id);
   }
 
   @Patch(':id')

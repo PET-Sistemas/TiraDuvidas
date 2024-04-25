@@ -2,30 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
 import { Answer } from './entities/answer.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { AnswerTypeormRepository } from './repositories/answer-typeorm-repository';
+import { SearchAnswerDto } from './dto/search-answer.dto';
 
 @Injectable()
 export class AnswerService {
-  constructor(
-    @InjectRepository(Answer)
-    private answersRepository: Repository<Answer>,
-  ) {}
+  constructor(private answersRepository: AnswerTypeormRepository) {}
 
-  create(createProfileDto: CreateAnswerDto) {
-    return this.answersRepository.save(
-      this.answersRepository.create(createProfileDto),
-    );
+  create(createAnswerDto: CreateAnswerDto) {
+    return this.answersRepository.insertOne(createAnswerDto);
   }
 
   findAll() {
     return `This action returns all answer`;
   }
 
-  findOne(fields: Partial<Answer>) {
-    return this.answersRepository.findOne({
-      where: fields,
-    });
+  findOne(id: number) {
+    return this.answersRepository.findOne(id);
   }
 
   update(id: number, updateAnswerDto: UpdateAnswerDto): Promise<Answer> {
