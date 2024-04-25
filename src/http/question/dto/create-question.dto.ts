@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsInt, IsString } from "class-validator";
-import { QuestionStatus } from "../enums/question-status.enum";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsInt, IsString } from 'class-validator';
+import { QuestionStatus } from '../enums/question-status.enum';
 
 export class CreateQuestionDto {
   @ApiProperty({ description: 'Título da dúvida' })

@@ -31,7 +31,10 @@ export class FeedbackController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFeedbackDto: UpdateFeedbackDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateFeedbackDto: UpdateFeedbackDto,
+  ) {
     return this.feedbackService.update(+id, updateFeedbackDto);
   }
 

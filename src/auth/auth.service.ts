@@ -3,13 +3,11 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/http/user/entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-import { AuthUpdateDto } from './dto/auth-update.dto';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 import { UserStatus } from 'src/http/user/enums/user-status.enum';
 import * as crypto from 'crypto';
 import { UserService } from 'src/http/user/user.service';
 import { MailService } from 'src/http/mail/mail.service';
-import { RegisterUserDto } from './dto/register-user.dto';
 import { CreateUserDto } from 'src/http/user/dto/create-user.dto';
 import { UpdateUserDto } from 'src/http/user/dto/update-user.dto';
 
