@@ -8,7 +8,16 @@ import { FeedbackTypeormRepository } from './repositories/feedback-typeorm-repos
 @Module({
   imports: [TypeOrmModule.forFeature([Feedback])],
   controllers: [FeedbackController],
-  providers: [FeedbackService, FeedbackTypeormRepository],
+  providers: [
+    FeedbackService,
+    FeedbackTypeormRepository,
+    {
+      provide: FeedbackService,
+      useFactory: (userRepository: FeedbackTypeormRepository) =>
+        new FeedbackService(userRepository),
+      inject: [FeedbackTypeormRepository],
+    },
+  ],
   exports: [FeedbackService],
 })
 export class FeedbackModule {}

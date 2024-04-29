@@ -91,6 +91,6 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
   public async delete(@Request() request) {
-    return this.service.softDelete(request.user);
+    return this.service.delete(request.user);
   }
 }

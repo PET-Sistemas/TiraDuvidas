@@ -17,7 +17,7 @@ export class UserController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+    return this.userService.insertOne(createUserDto);
   }
 
   @Get()
@@ -37,6 +37,6 @@ export class UserController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.softDelete(+id);
+    return this.userService.delete(+id);
   }
 }

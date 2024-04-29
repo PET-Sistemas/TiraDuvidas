@@ -8,7 +8,16 @@ import { AnswerTypeormRepository } from './repositories/answer-typeorm-repositor
 @Module({
   imports: [TypeOrmModule.forFeature([Answer])],
   controllers: [AnswerController],
-  providers: [AnswerService, AnswerTypeormRepository],
+  providers: [
+    AnswerService,
+    AnswerTypeormRepository,
+    {
+      provide: AnswerService,
+      useFactory: (userRepository: AnswerTypeormRepository) =>
+        new AnswerService(userRepository),
+      inject: [AnswerTypeormRepository],
+    },
+  ],
   exports: [AnswerService],
 })
 export class AnswerModule {}

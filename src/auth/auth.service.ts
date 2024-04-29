@@ -68,7 +68,7 @@ export class AuthService {
     registerDto.hash = hash;
     registerDto.status = UserStatus.ACTIVE;
 
-    const user = await this.userService.create(registerDto);
+    const user = await this.userService.insertOne(registerDto);
 
     await this.mailService.userSignUp({
       to: user.email,
@@ -120,7 +120,7 @@ export class AuthService {
       .createHash('sha256')
       .update(randomStringGenerator())
       .digest('hex');
-    await this.userService.create({ ...user, hash });
+    await this.userService.insertOne({ ...user, hash });
 
     await this.mailService.forgotPassword({
       to: email,
@@ -187,7 +187,7 @@ export class AuthService {
     return this.userService.update(userDto);
   }
 
-  async softDelete(user: User): Promise<User> {
-    return await this.userService.softDelete(user.id);
+  async delete(user: User): Promise<void> {
+    await this.userService.delete(user.id);
   }
 }

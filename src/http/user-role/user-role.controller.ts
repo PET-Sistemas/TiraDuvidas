@@ -17,7 +17,7 @@ export class UserRoleController {
 
   @Post()
   create(@Body() createUserRoleDto: CreateUserRoleDto) {
-    return this.userroleService.create(createUserRoleDto);
+    return this.userroleService.insertOne(createUserRoleDto);
   }
 
   @Get()
@@ -35,11 +35,11 @@ export class UserRoleController {
     @Param('id') id: string,
     @Body() updateUserRoleDto: UpdateUserRoleDto,
   ) {
-    return this.userroleService.update(+id, updateUserRoleDto);
+    return this.userroleService.update(updateUserRoleDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userroleService.softDelete(+id);
+    return this.userroleService.delete(+id);
   }
 }

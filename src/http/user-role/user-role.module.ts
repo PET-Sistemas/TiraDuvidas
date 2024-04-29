@@ -8,7 +8,16 @@ import { UserRoleTypeormRepository } from './repositories/user-role-typeorm-repo
 @Module({
   imports: [TypeOrmModule.forFeature([UserRole])],
   controllers: [UserRoleController],
-  providers: [UserRoleService, UserRoleTypeormRepository],
+  providers: [
+    UserRoleService,
+    UserRoleTypeormRepository,
+    {
+      provide: UserRoleService,
+      useFactory: (userRepository: UserRoleTypeormRepository) =>
+        new UserRoleService(userRepository),
+      inject: [UserRoleTypeormRepository],
+    },
+  ],
   exports: [UserRoleService],
 })
 export class UserRoleModule {}

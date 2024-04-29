@@ -17,7 +17,7 @@ export class AnswerController {
 
   @Post()
   create(@Body() createAnswerDto: CreateAnswerDto) {
-    return this.answerService.create(createAnswerDto);
+    return this.answerService.insertOne(createAnswerDto);
   }
 
   @Get()
@@ -32,11 +32,11 @@ export class AnswerController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAnswerDto: UpdateAnswerDto) {
-    return this.answerService.update(+id, updateAnswerDto);
+    return this.answerService.update(updateAnswerDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.answerService.softDelete(+id);
+    return this.answerService.delete(+id);
   }
 }
