@@ -18,6 +18,8 @@ import { AuthResetPasswordDto } from './dto/auth-reset-password.dto';
 import { AuthUpdateDto } from './dto/auth-update.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { CreateUserDto } from 'src/http/user/dto/create-user.dto';
+import { UpdateUserDto } from 'src/http/user/dto/update-user.dto';
 
 @Controller({
   path: 'auth',
@@ -34,7 +36,7 @@ export class AuthController {
 
   @Post('email/register')
   @HttpCode(HttpStatus.CREATED)
-  async register(@Body() createUserDto: RegisterUserDto) {
+  async register(@Body() createUserDto: CreateUserDto) {
     return this.service.register(createUserDto);
   }
 
@@ -76,14 +78,19 @@ export class AuthController {
   @Patch('my_profile')
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
-  public async update(@Request() request, @Body() userDto: AuthUpdateDto) {
-    return this.service.update(request.user, userDto);
+  public async update(
+    @Request() request,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    const id = request.user.id;
+    Object.assign(id, updateUserDto);
+    return this.service.update(updateUserDto);
   }
 
   @Delete('my_profile')
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
   public async delete(@Request() request) {
-    return this.service.softDelete(request.user);
+    return this.service.delete(request.user);
   }
 }

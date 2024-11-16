@@ -4,7 +4,7 @@
   "port": 5432,
   "username": "tira_duvidas_back",
   "password": "tira_duvidas_back",
-  "database": "tira_duvidas",
+  "database": "tira_duvidas_back",
   "synchronize": false,
   "dropSchema": false,
   "keepConnectionAlive": true,

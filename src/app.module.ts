@@ -7,8 +7,14 @@ import appConfig from './config/app.config';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { MailModule } from './http/mail/mail.module';
-// import { ScheduleModule } from '@nestjs/schedule';
+import { AnswerModule } from './http/answer/answer.module';
+import { CategoryModule } from './http/category/category.module';
+import { FeedbackModule } from './http/feedback/feedback.module';
+import { QuestionModule } from './http/question/question.module';
+import { UserRoleModule } from './http/user-role/user-role.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -20,10 +26,22 @@ import { MailModule } from './http/mail/mail.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    // ScheduleModule.forRoot(),
+    ScheduleModule.forRoot(),
+    ThrottlerModule.forRoot([
+      {
+        name: 'default',
+        ttl: Math.round(10 * 1000),
+        limit: 1,
+      },
+    ]),
     UserModule,
     AuthModule,
     MailModule,
+    AnswerModule,
+    CategoryModule,
+    FeedbackModule,
+    QuestionModule,
+    UserRoleModule,
   ],
   providers: [],
 })

@@ -1,19 +1,14 @@
 import {
-  Column,
   CreateDateColumn,
   DeleteDateColumn,
-  Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { IGenericEntity } from './generic-entity.interface';
 
-@Entity('categories')
-export class Category {
+export abstract class GenericEntity implements IGenericEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ type: 'text', name: 'name' })
-  name: string;
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt: Date;

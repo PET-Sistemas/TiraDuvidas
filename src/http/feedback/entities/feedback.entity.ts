@@ -1,75 +1,48 @@
 import {
-  AfterLoad,
-  BeforeInsert,
-  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  Index,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { RoleEnum } from 'src/http/role/role.enum';
 import { FeedbackStatus } from '../enums/feedback-status.enum';
-import * as bcrypt from 'bcryptjs';
-import { AuthProvidersEnum } from 'src/auth/auth-providers.enum';
+import { User } from 'src/http/user/entities/user.entity';
+import { Answer } from 'src/http/answer/entities/answer.entity';
 
-@Entity('feedback')
+@Entity('feedbacks')
 export class Feedback {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, nullable: true })
-  email: string | null;
+  @Column({ name: 'user_id' })
+  userId: number;
 
-  @Column({ nullable: true })
-  password: string;
+  @Column({ name: 'answer_id' })
+  answerId: number;
 
-  public previousPassword: string;
+  @Column({ type: 'text', name: 'justification' })
+  justification: string;
 
-  @AfterLoad()
-  public loadPreviousPassword(): void {
-    this.previousPassword = this.password;
-  }
+  @Column({ type: 'enum', enum: FeedbackStatus, name: 'situation' })
+  situation?: FeedbackStatus;
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  async setPassword() {
-    if (this.previousPassword !== this.password && this.password) {
-      const salt = await bcrypt.genSalt();
-      this.password = await bcrypt.hash(this.password, salt);
-    }
-  }
-
-  @Column({ default: AuthProvidersEnum.EMAIL })
-  provider: string;
-
-  @Index()
-  @Column({ nullable: true })
-  firstName: string | null;
-
-  @Index()
-  @Column({ nullable: true })
-  lastName: string | null;
-
-  @Index()
-  @Column({ nullable: false, type: 'enum', enum: RoleEnum })
-  role: RoleEnum;
-
-  @Column({ nullable: false, type: 'enum', enum: FeedbackStatus })
-  status?: FeedbackStatus;
-
-  @Column({ nullable: true })
-  @Index()
-  hash: string | null;
-
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at' })
   updatedAt: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ type: 'timestamptz', name: 'deleted_at' })
   deletedAt: Date;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
+  @ManyToOne(() => Answer)
+  @JoinColumn({ name: 'answer_id' })
+  answer: Answer;
 }

@@ -8,7 +8,16 @@ import { QuestionTypeormRepository } from './repositories/question-typeorm-repos
 @Module({
   imports: [TypeOrmModule.forFeature([Question])],
   controllers: [QuestionController],
-  providers: [QuestionService, QuestionTypeormRepository],
+  providers: [
+    QuestionService,
+    QuestionTypeormRepository,
+    {
+      provide: QuestionService,
+      useFactory: (userRepository: QuestionTypeormRepository) =>
+        new QuestionService(userRepository),
+      inject: [QuestionTypeormRepository],
+    },
+  ],
   exports: [QuestionService],
 })
 export class QuestionModule {}

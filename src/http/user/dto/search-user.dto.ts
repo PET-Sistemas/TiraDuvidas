@@ -3,7 +3,7 @@ import { IsEmail, IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 import { RoleEnum } from 'src/http/role/role.enum';
 import { UserStatus } from '../enums/user-status.enum';
 
-export class UpdateUserDto {
+export class SearchUserDto {
   @ApiPropertyOptional({ description: 'ID do usuário' })
   @IsOptional()
   @IsInt()
@@ -18,6 +18,11 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   password?: string;
+
+  @ApiPropertyOptional({ description: 'Hash do usuário' })
+  @IsOptional()
+  @IsString()
+  hash?: string;
 
   @ApiPropertyOptional({ description: 'Provedor de autenticação' })
   @IsOptional()

@@ -17,7 +17,7 @@ export class CategoryController {
 
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoryService.create(createCategoryDto);
+    return this.categoryService.insertOne(createCategoryDto);
   }
 
   @Get()
@@ -31,12 +31,15 @@ export class CategoryController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryService.update(+id, updateCategoryDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+  ) {
+    return this.categoryService.update(updateCategoryDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.categoryService.softDelete(+id);
+    return this.categoryService.delete(+id);
   }
 }
